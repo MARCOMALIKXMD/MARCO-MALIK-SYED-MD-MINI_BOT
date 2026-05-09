@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MARCO MALIK & SYED — MINI BOT</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Background layers -->
+    <div class="bg-image"></div>
+    <div class="bg-scanlines"></div>
+    <div class="bg-vignette"></div>
+    <div class="bg-green-glow"></div>
+    <canvas id="matrix-canvas"></canvas>
+
+    <div class="wrapper">
+
+        <!-- Hero Header -->
+        <header class="hero">
+            <div class="hero-img-wrap">
+                <img src="menu-bg.jpg" alt="Marco Malik & Syed" class="hero-img" />
+                <div class="hero-img-ring"></div>
+            </div>
+
+            <div class="hero-badge">
+                <span class="blink">▮</span> SYSTEM ONLINE
+            </div>
+
+            <h1 class="hero-title">
+                MARCO MALIK<br>
+                <span class="amp">&</span> SYED
+            </h1>
+            <p class="hero-subtitle">— MINI BOT — PUBLIC SYSTEM —</p>
+            <p class="hero-tagline">
+                <span class="accent">WE DON'T FOLLOW RULES,</span> WE CREATE_SYSTEMS
+            </p>
+        </header>
+
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <div class="status-item">
+                <div class="status-dot"></div>
+                SERVER ONLINE
+            </div>
+            <div class="status-item">
+                <div class="status-dot yellow"></div>
+                AWAITING_CONNECTION
+            </div>
+        </div>
+
+        <!-- Main Connection Card -->
+        <div class="card" id="mainCard">
+            <div class="card-header">
+                <h2>CONNECT_WHATSAPP</h2>
+                <p>Enter your phone number to generate a pairing code. Use it in WhatsApp → Linked Devices.</p>
+            </div>
+
+            <!-- Pair Zone Display -->
+            <div class="pair-zone" id="pairZone">
+                <div class="pair-idle" id="pairIdle">
+                    <div class="pair-idle-icon">📱</div>
+                    <p>// awaiting phone number input...</p>
+                </div>
+
+                <div class="pair-loading hidden" id="pairLoading">
+                    <div class="hack-ring"></div>
+                    <div class="terminal-loader">
+                        REQUESTING_PAIRING_CODE<span class="cursor">_</span>
+                    </div>
+                </div>
+
+                <div class="pair-result hidden" id="pairResult">
+                    <div class="pair-label">// PAIRING_CODE</div>
+                    <div class="pair-code" id="pairCode">----</div>
+                    <div class="pair-code-hint">Enter this code in WhatsApp → Linked Devices</div>
+                </div>
+            </div>
+
+            <!-- Input -->
+            <div class="input-group">
+                <label class="input-label">PHONE_NUMBER</label>
+                <div class="input-shell">
+                    <span class="input-prefix">+</span>
+                    <input type="tel" id="phoneInput" placeholder="923001234567" maxlength="15" autocomplete="off" />
+                </div>
+                <span class="input-hint">// country code + number, no spaces or dashes · e.g: 923001234567</span>
+            </div>
+
+            <!-- Steps -->
+            <div class="steps">
+                <div class="step"><span class="step-num">1</span>Enter your WhatsApp number with country code</div>
+                <div class="step"><span class="step-num">2</span>Click "GET PAIRING CODE" and wait 3–5 seconds</div>
+                <div class="step"><span class="step-num">3</span>Open WhatsApp → Settings → Linked Devices</div>
+                <div class="step"><span class="step-num">4</span>Tap "Link with Phone Number" and enter the code</div>
+            </div>
+
+            <button class="btn btn-primary" id="btnPair" onclick="startPairing()">
+                <span>⚡ GET PAIRING CODE</span>
+            </button>
+        </div>
+
+        <!-- Success Card -->
+        <div class="card success-card hidden" id="successCard">
+            <div class="success-icon-wrap">
+                <span class="success-icon">✅</span>
+            </div>
+            <div class="success-title">CONNECTION_ESTABLISHED</div>
+            <p class="success-sub">
+                Your WhatsApp bot is now active and running.<br>
+                You can close this tab — the bot keeps running.
+            </p>
+            <div class="success-info">
+                <div class="info-row">
+                    <span>// BOT_NAME</span>
+                    <strong>MARCO MALIK & SYED-MD MINI BOT</strong>
+                </div>
+                <div class="info-row">
+                    <span>// STATUS</span>
+                    <strong class="green">ACTIVE &amp; RUNNING</strong>
+                </div>
+                <div class="info-row">
+                    <span>// PREFIX</span>
+                    <strong>. (dot)</strong>
+                </div>
+                <div class="info-row">
+                    <span>// COMMAND_LIST</span>
+                    <strong>Type .help or .menu</strong>
+                </div>
+            </div>
+            <p class="success-hint">Type <code>.menu</code> or <code>.help</code> in any WhatsApp chat to see all commands.</p>
+            <button class="btn btn-outline" onclick="resetUI()" style="width:auto;padding:10px 28px">
+                CONNECT_ANOTHER
+            </button>
+        </div>
+
+        <!-- Features -->
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <h3>PRIVATE</h3>
+                <p>Sessions isolated. Nobody sees your number.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>INSTANT</h3>
+                <p>Lightning fast command processing.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🌐</div>
+                <h3>80+ CMDS</h3>
+                <p>Stickers, games, AI, group tools & more.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">♾️</div>
+                <h3>UNLIMITED</h3>
+                <p>Any number of users can connect.</p>
+            </div>
+        </div>
+
+        <footer class="footer">
+            𓆩 <span class="accent">MARCO MALIK & SYED-MD MINI BOT</span> 𓆪 &mdash; v2.0.0<br>
+            WE DON'T FOLLOW RULES, WE CREATE_SYSTEMS
+        </footer>
+
+    </div>
+
+    <!-- Toast -->
+    <div class="toast hidden" id="toast"></div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="app.js"></script>
+    <script>
+    // Matrix rain effect
+    (function() {
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        resize();
+        window.addEventListener('resize', resize);
+        const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&';
+        const fontSize = 14;
+        let columns = Math.floor(canvas.width / fontSize);
+        const drops = Array(columns).fill(1);
+        function draw() {
+            ctx.fillStyle = 'rgba(0,0,0,0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#39ff14';
+            ctx.font = fontSize + 'px JetBrains Mono, monospace';
+            columns = Math.floor(canvas.width / fontSize);
+            for (let i = 0; i < drops.length; i++) {
+                const text = chars[Math.floor(Math.random() * chars.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            }
+        }
+        setInterval(draw, 50);
+    })();
+    </script>
+</body>
+</html>
